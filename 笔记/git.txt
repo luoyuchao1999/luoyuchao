@@ -1,0 +1,31 @@
+git refolg :用来记录每一次命令
+git log:历史记录
+git checkout -- wenjianming.txt 回到最近一次修改以前
+git diff HEAD -- readme.txt 查看工作区和版本库里的区别
+git reset HEAD readme.txt 既可以回退版本，也可以把暂存区的修改回退到工作区。
+rm test.txt 删除文件
+git rm test.txt 确实要从版本库中删除该文件
+git push -u origin master 本地库推送到远程库
+git remote -v 查看所有连接的远程库
+git remote rm origin 删除远程库origin
+git remote add origin git@github.com:luoyuchao1999/luoyuchao.git  连接远程库其中origin名字自取相当于连接名，后面是账户名/库名
+git clone git@github.com:luoyuchao1999/gitskill.git  将远程库克隆到本地
+git checkout -b dev 创建dev分支
+git branch 查看当前分支
+git checkout master 转换分支到master
+git merge dev 将dev合并到当前分支
+git switch -c dev 创建并切换到新的dev分支
+git switch master 转换到master分支
+Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，再提交。用git log --graph命令可以看到分支合并图。
+准备合并dev分支，请注意--no-ff参数，表示禁用Fast forward：$ git merge --no-ff -m "merge with no-ff" dev 因为本次合并要创建一个新的commit，所以加上-m参数，把commit描述写进去。
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+git stash 可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+刚才的工作现场存到哪去了？用git stash list命令看看：
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；另一种方式是用git stash pop，恢复的同时把stash内容也删
+可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：$ git stash apply stash@{0}
+Git专门提供了一个cherry-pick命令，让我们能复制一个特定的提交到当前分支：git cherry-pick 4c805e2  其中4c805e2指的是commit的修改bug的id
+如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+Git就会把该分支推送到远程库对应的远程分支上：$ git push origin master
+你的小伙伴clone时要在dev分支上开发，就必须创建远程origin的dev分支到本地，于是他用这个命令创建本地dev分支：$ git checkout -b dev origin/dev
+当你跟小伙伴同时对一个文件修改推送时，你后推送的就要，先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送。
+在pull之前，设置dev和origin/dev的链接：$ git branch --set-upstream-to=origin/dev dev 再git pull 就可以推送了
